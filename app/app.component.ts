@@ -3,7 +3,8 @@ import { Component } from '@angular/core';
 interface Passenger {
   id: number,
   fullname: string,
-  checkedIn: boolean
+  checkedIn: boolean,
+  checkInDate: number | null
 }
 
 @Component({
@@ -30,6 +31,9 @@ interface Passenger {
                backgroundColor: (passenger.checkedIn ? '#2ecc71' : '#c0392b')
               }"></span>
             {{ i }}: {{ passenger.fullname }}
+            <p>{{ passenger | json }}</p>
+            Check in Date:
+              {{ passenger.checkInDate ? (passenger.checkInDate | date: 'yMMMMd' | uppercase) : 'Not checked in'}}
           </li>
         </ul>
     </div>
@@ -39,22 +43,27 @@ export class AppComponent {
   passengers: Passenger[] = [{
     id: 1,
     fullname: 'Stephen',
-    checkedIn: true
+    checkedIn: true,
+    checkInDate: 1490742000000
   }, {
     id: 2,
     fullname: 'Rose',
-    checkedIn: false
+    checkedIn: false,
+    checkInDate: null
   }, {
     id: 3,
     fullname: 'James',
-    checkedIn: true
+    checkedIn: true,
+    checkInDate: 1490742000000
   }, {
     id: 4,
     fullname: 'Louise',
-    checkedIn: true
+    checkedIn: true,
+    checkInDate: 1498750000000
   }, {
     id: 5,
     fullname: 'Tina',
-    checkedIn: false
+    checkedIn: false,
+    checkInDate: null
   }]
 }
