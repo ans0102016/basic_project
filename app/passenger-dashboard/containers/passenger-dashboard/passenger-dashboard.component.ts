@@ -7,22 +7,12 @@ import { Passenger } from '../../models/passenger.interface';
     styleUrls:['passenger-dashboard.component.scss'],
     template: `
         <div>
-            <h3>Airline Passengers</h3>
-            <ul>
-            <li *ngFor="let passenger of passengers, let i = index">
-                <span
-                class="status"
-                [ngStyle]="{
-                backgroundColor: (passenger.checkedIn ? '#2ecc71' : '#c0392b')
-                }"></span>
-                {{ i }}: {{ passenger.fullname }}
-                Check in Date:
-                {{ passenger.checkInDate ? (passenger.checkInDate | date: 'yMMMMd' | uppercase) : 'Not checked in'}}
-                <div class="children">
-                    Children: {{ passenger.children?.length || 0 }}
-                </div>
-            </li>
-            </ul>
+            <passenger-count
+              [items]="passengers">
+            </passenger-count>
+            <passenger-detail
+              *ngFor="let passenger of passengers"
+              [detail]="passenger"></passenger-detail>
         </div>
     `
 })
