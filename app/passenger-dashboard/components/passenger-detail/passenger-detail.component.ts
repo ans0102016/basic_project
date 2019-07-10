@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Passenger } from '../../models/passenger.interface';
 
 @Component({
@@ -11,17 +11,61 @@ import { Passenger } from '../../models/passenger.interface';
             [ngStyle]="{
             backgroundColor: (detail.checkedIn ? '#2ecc71' : '#c0392b')
             }"></span>
-        {{ detail.fullname }}
+        <div *ngIf="editing">
+            <input 
+                type="text" 
+                [value]="detail.fullname"
+                (input)="onNameChange(name.value)"
+                #name>
+        </div>
+        <div *ngIf="!editing">
+            {{ detail.fullname }}
+        </div>
         Check in Date:
         {{ detail.checkInDate ? (detail.checkInDate | date: 'yMMMMd' | uppercase) : 'Not checked in'}}
         <div class="children">
             Children: {{ detail.children?.length || 0 }}
         </div>
+        <div>
+            <button (click)="toggleEdit()">
+                {{ editing? 'Done' : 'Edit'}}
+            </button>
+        </div>
+        <div>
+            <button (click)="onRemove()">
+                Remove
+            </button>
+        </div>
     `
 })
 
 export class PassengerDetailComponent {
+    
     @Input()
-    detail: Passenger[];
+    detail: Passenger;
+
+    @Output()
+    edit: EventEmitter<any> = new EventEmitter();
+
+    @Output()
+    remove: EventEmitter<any> = new EventEmitter();
+
+    editing: boolean = false;
+
     constructor() {}
+
+    onNameChange(value: string) {
+        this.detail.fullname = value;
+    }
+
+    toggleEdit() {
+        if (this.editing) {
+            this.edit.emit(this.detail);
+        }
+        this.editing = !this.editing;
+    }
+
+    onRemove() {
+        this.remove.emit(this.detail);
+    }
 }
