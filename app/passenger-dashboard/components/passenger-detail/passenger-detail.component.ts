@@ -30,8 +30,6 @@ import { Passenger } from '../../models/passenger.interface';
             <button (click)="toggleEdit()">
                 {{ editing? 'Done' : 'Edit'}}
             </button>
-        </div>
-        <div>
             <button (click)="onRemove()">
                 Remove
             </button>
