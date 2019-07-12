@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 
-import { PassengerDashboardService } from '../../passenger-dashboard.service';
-
 import { Passenger } from '../../models/passenger.interface';
+import { Baggage } from '../../models/baggage.interface';
 
 @Component({
     selector: 'passenger-form',
@@ -25,24 +24,13 @@ import { Passenger } from '../../models/passenger.interface';
                     [ngModel]="detail?.id">
             </div>
             <div>
-                Checked In:
+                Checked in:
                 <label>
                     <input 
-                        type="radio"
-                        [value]="true"
+                        type="checkbox"
                         name="checkedIn"
                         [ngModel]="detail?.checkedIn"
                         (ngModelChange)="toggleCheckIn($event)">
-                    Yes
-                </label>
-                <label>
-                    <input 
-                        type="radio"
-                        [value]="false"
-                        name="checkedIn"
-                        [ngModel]="detail?.checkedIn"
-                        (ngModelChange)="toggleCheckIn($event)">
-                    No
                 </label>
             </div>
             <div *ngIf="form.value.checkedIn">
@@ -52,7 +40,19 @@ import { Passenger } from '../../models/passenger.interface';
                     name="checkInDate"
                     [ngModel]="detail?.checkInDate">
             </div>
-
+            <div>
+                Luggage:
+                <select
+                    name="baggage"
+                    [ngModel]="detail?.baggage">
+                    <option
+                        *ngFor="let item of baggage"
+                        [value]="item.key"
+                        [selected]="item.key === detail?.baggage">
+                        {{ item.value }}
+                    </option>
+                </select>
+            </div>
             {{ form.value | json }}
         </form>
     `
@@ -61,6 +61,20 @@ import { Passenger } from '../../models/passenger.interface';
 export class PassengerFormComponent { 
     @Input()
     detail: Passenger;
+
+    baggage: Baggage[] = [{
+        key: 'none',
+        value: 'No Baggage'
+    }, {
+        key: 'hand-only',
+        value: 'Hand Baggage'
+    }, {
+        key: 'holdd-only',
+        value: 'Holdd Baggage'
+    }, {
+        key: 'hand-hold',
+        value: 'Hand & Hold Baggage'
+    }];
 
     toggleCheckIn(checkedIn: boolean) {
         if (checkedIn) {
